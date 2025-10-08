@@ -1,0 +1,63 @@
+<!-- Author: Angirmaa Ganbat x24177032 -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <title>LogIn</title>
+  </head>
+  <body>
+    <div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+  <div class="card p-4 shadow" style="width: 450px;">
+     <h2 class="text-center fw-bold" id="logInhead" >Welcome to PromoPlay</h2>
+    <form class="needs-validation" >
+  <div class="row mb-3">
+    <label for="inputEmail" class="col-sm-2 col-form-label"></label>
+    <div class="col-sm-10">
+      <input type="email" class="form-control" id="inputEmailLogIn" placeholder="Email address">
+      <div class="invalid-feedback">Please enter a valid email.</div>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <label for="inputPassword" class="col-sm-2 col-form-label"></label>
+    <div class="col-sm-10">
+      <input type="password" class="form-control" id="inputPasswordLogIn" placeholder="New password" minlength="6" required>
+    </div>
+    <div id="passwordReset" class="form-text">
+    Forgotten your password?
+    </div>
+  </div>
+  <div class="logInButtonDiv">
+  <button type="submit" class="btn btn-primary" id="loginbutton">Log in</button>
+  </div>
+  <div class="signUpButtonDiv">
+  <button type="submit" class="btn btn-primary" id="createNewAcc">Sign Up</button>
+  </div>
+</form>
+ </div>
+</div>
+
+<script>
+  (() => {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  const forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+
+      form.classList.add('was-validated')
+    }, false)
+  })
+})()
+</script>>
+  </body>
+</html>
