@@ -1,0 +1,100 @@
+/* Author: Angirmaa Ganbat x24177032*/
+
+/*SignUp page style*/
+
+#createacchead{
+	color: navy;
+}
+#createaccid{
+	background-color: navy;
+	
+}
+#passwordReset{
+	padding-left: 80px;
+	color: darkred;
+
+}
+
+/*LogIn page style*/
+
+#loginbutton{
+	background-color: navy;
+	font-weight: bold; 
+	width: 100px;
+}
+
+
+.logInButtonDiv{
+	
+  display: flex;
+  flex-direction: row;
+}
+
+#logInhead{
+	padding-left: 50px;
+	color: navy;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+#createNewAcc{
+	width: 100px;
+	background-color: #401694;
+	font-weight: bold; 
+}
+
+.signUpButtonDiv{
+	margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+}
+
+/*Home page style*/
+
+	.container-fluid {
+      background-color: #f8f9fa;
+    }
+
+    .leftbar{
+      background-color: #ffffff;
+      backdrop-filter: blur(8px);
+      border-top: 1px solid rgba(255, 255, 255, 0.4);
+      border-left: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 3px 3px 3px  rgba(0, 0, 0, 0.05);
+      border-radius: 20px;
+      padding: 20px;
+      height: 90vh;
+    }
+
+    .rightbar {
+      background-color: #ffffff;
+      backdrop-filter: blur(8px);
+      border-top: 1px solid rgba(255, 255, 255, 0.4);
+      border-left: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 3px 3px 3px  rgba(0, 0, 0, 0.05);
+      border-radius: 20px;
+      padding: 20px;
+      height: 90vh;
+    }
+  
+    .feed {
+      height: 90vh;
+      overflow-y: auto;
+      padding: 20px;
+    }
+
+    .reaction{
+      margin-top:4px;
+    }
+
+    .mainPost {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+    .post img {
+      border-radius: 15px;
+      width: 100%;
+    }

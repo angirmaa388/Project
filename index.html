@@ -1,0 +1,118 @@
+<!-- Author: Angirmaa Ganbat x24177032 -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <title>Home page</title>
+  </head>
+  <body class="body">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <!-- Logo image-->
+        <a class="navbar-brand" href="index.html">
+          <img src="imgs/logo.png" alt="Logo" width="150">
+        </a>
+
+        <!-- toggle button -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar part -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="index.html">
+                <strong>Home</strong></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <strong>Campaign</strong></a>
+            </li>
+            
+            <!-- Profile -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle d-flex align-items-center" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="imgs/profile.png" alt="" width="32" height="32" class="rounded-circle me-2">
+                <strong>About</strong>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Create new post</a></li>
+                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#">Sign out</a></li>
+              </ul>
+            </li>
+          </ul>
+           <!-- Searching part -->
+          <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+<!-- main part-->
+<div class="container-fluid">
+  <div class="row justify-content-center">
+
+    <!-- Side bar left side-->
+
+    <div class="col-lg-3 col-md-4 d-none d-md-block ">
+      <div class="leftbar">
+          <h5 class="text">text</h5>
+          <p>text</p>
+          <p class="text">text</p>
+      </div>
+    </div>
+
+    <!-- main feed-->
+    <div class="col-lg-6 col-md-8 col-sm-12 mb-3">
+      <div class="feed">
+        <!-- Individual post-->
+        <div class="mainPost">
+          <h6 class= "userName"><strong>name</strong></h6>
+          <p>comment explanation</p>
+          <img src="" alt="PostImage">
+          <div class="reaction">
+            <button class="btn btn-outline-primary btn-sm">Like</button>
+            <button type="button" class="btn btn-outline-secondary">Comment</button>
+          </div>
+        </div>
+
+        <div class="mainPost">
+          <h6 class= "userName"><strong>name</strong></h6>
+          <p>comment explanation</p>
+          <img src="" alt="PostImage">
+          <div class="reaction">
+            <button class="btn btn-outline-primary btn-sm">Like</button>
+            <button type="button" class="btn btn-outline-secondary">Comment</button>
+          </div>
+        </div>
+        <!-- Comment area-->
+        
+      </div>
+    </div>
+
+    <!-- Right Sidebar -->
+    <div class="col-lg-3 col-md-3 d-none d-lg-block mb-3">
+      <div class="rightbar">
+        <h5 class="text">text</h5>
+        <p>text</p>
+        
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- java script -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+</body>
+
+</html>
