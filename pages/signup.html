@@ -14,18 +14,18 @@
       <div class="card p-4 shadow" style="width: 450px;">
         <h2 class="text-center fw-bold" id="createacchead" >Create a new account</h2>
         <!-- Form -->
-          <form class="needs-validation" >
+          <form class="needs-validation" id = "formCreateAcc" >
             <div class="mb-1">
               <label for="disabledTextInput" class="col-sm-2 col-form-label"></label>
               <div class="col-sm-10">
-              <input type="text" class="form-control" placeholder="User name">
+              <input type="text" class="form-control" id="userName" placeholder="User name">
               </div>
             </div>
 
             <div class="mb-1">
               <label for="inputEmail" class="col-sm-2 col-form-label"></label>
               <div class="col-sm-10">
-                <input type="email" class="form-control" id="inputEmail" placeholder="Email address">
+                <input type="email" class="form-control" id="email" placeholder="Email address">
                 <div class="invalid-feedback">Please enter a valid email.</div>
               </div>
             </div>
@@ -33,7 +33,7 @@
             <div class="mb-1">
               <label for="inputPassword" class="col-sm-2 col-form-label"></label>
               <div class="col-sm-10">
-                <input type="password" class="form-control" id="inputPassword" placeholder="New password" minlength="6" required>
+                <input type="password" class="form-control" id="password" placeholder="New password" minlength="6" required>
               </div>
               <div id="passwordHelpBlock" class="form-text">
                 Your password must be 6-10 characters long.
@@ -45,19 +45,19 @@
 
           <fieldset class="row mb-3">
             <legend class="col-form-label col-sm-2 pt-0">Status</legend>
-          <div class="col-sm-10">
+          <div class="col-sm-10" id = "status">
           <div class="form-check">
-            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
+            <input class="form-check-input" type="radio" name="status" value="user" checked>
             <label class="form-check-label" for="gridRadios1">
               User
             </label>
           </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-        <label class="form-check-label" for="gridRadios2">
-          Company
-        </label>
-      </div>
+         <div class="form-check">
+              <input class="form-check-input" type="radio" name="status" value="Company">
+              <label class="form-check-label" for="gridRadios2">
+               Company
+             </label>
+          </div>
 
     </div>
 
@@ -73,7 +73,7 @@
             </div>
           </div>
           </div>
-            <button type="submit" class="btn btn-primary" id="createaccid">Sign up</button>
+            <button type="submit" class="btn btn-primary" id="submit">Sign up</button>
           </form>
         </div>
   </div>
@@ -97,6 +97,36 @@
         }, false)
       })
     })()
-  </script>>
+  </script>
+  <script>
+    const formCreateAcc = document.querySelector('#formCreateAcc');
+
+    formCreateAcc.addEventListener('submit', event => {
+      event.preventDefault();
+      
+      const users = {
+        userName: document.getElementById("userName").value, 
+        email: document.getElementById("email").value, 
+        password: document.getElementById("password").value, 
+        status: document.querySelector('input[name="status"]:checked').value
+      };
+
+      fetch('http://localhost:8085/api/v1/users', {
+        method: 'POST', 
+        headers: {
+          'Content-Type': 'application/json'
+        }, 
+        body: JSON.stringify(users)
+      }).then(res => {
+        if(res.ok) {
+          alert("account successfully created!");
+        }else{
+          alert("account creation unsuccessfull!");
+        }
+      })
+        .catch(error => alert("network error!"));
+      });
+
+  </script> 
 </body>
 </html>
