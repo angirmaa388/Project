@@ -12,18 +12,18 @@
     <div class="d-flex justify-content-center align-items-center vh-100 bg-light">
   <div class="card p-4 shadow" style="width: 450px;">
      <h2 class="text-center fw-bold" id="logInhead" >Welcome to PromoPlay</h2>
-    <form class="needs-validation" >
+    <form class="needs-validation" id = "formLogIn">
   <div class="row mb-3">
     <label for="inputEmail" class="col-sm-2 col-form-label"></label>
     <div class="col-sm-10">
-      <input type="email" class="form-control" id="inputEmailLogIn" placeholder="Email address">
+      <input type="email" class="form-control" id="email" placeholder="Email address">
       <div class="invalid-feedback">Please enter a valid email.</div>
     </div>
   </div>
   <div class="row mb-3">
     <label for="inputPassword" class="col-sm-2 col-form-label"></label>
     <div class="col-sm-10">
-      <input type="password" class="form-control" id="inputPasswordLogIn" placeholder="New password" minlength="6" required>
+      <input type="password" class="form-control" id="password" placeholder="New password" minlength="6" required>
     </div>
     <div id="passwordReset" class="form-text">
     Forgotten your password?
@@ -33,7 +33,8 @@
   <button type="submit" class="btn btn-primary" id="loginbutton">Log in</button>
   </div>
   <div class="signUpButtonDiv">
-  <button type="submit" class="btn btn-primary" id="createNewAcc">Sign Up</button>
+    <a href="pages/signup.html" class="btn btn-primary" tabindex="-1" role="button" id="createNewAcc">Sign Up</a>
+  
   </div>
 </form>
  </div>
@@ -58,6 +59,33 @@
     }, false)
   })
 })()
+</script>>
+<script>
+    const formLogIn = document.querySelector('#formLogIn');
+
+    formLogIn.addEventListener('submit', event => {
+      event.preventDefault();
+      
+      const logIn = {
+        email: document.getElementById("email").value, 
+        password: document.getElementById("password").value
+      };
+
+      fetch('http://localhost:8085/api/v1/users/login', {
+        method: 'POST', 
+        headers: {
+          'Content-Type': 'application/json'
+        }, 
+        body: JSON.stringify(logIn)
+      }).then(res => {
+        if(res.ok) {
+           window.location.href = "pages/home.html"
+        }else{
+          alert("Log In failed!");
+        }
+      })
+        .catch(error => alert("network error!"));
+      });
 </script>>
   </body>
 </html>
