@@ -111,15 +111,18 @@
         status: document.querySelector('input[name="status"]:checked').value
       };
 
-      fetch('http://localhost:8085/api/v1/users', {
+      fetch('http://localhost:8086/api/v1/auth/Register', {
         method: 'POST', 
         headers: {
           'Content-Type': 'application/json'
         }, 
         body: JSON.stringify(users)
-      }).then(res => {
-        if(res.ok) {
+      }).then(res => res.json()).then(data => {
+        if(data.token) {
+          localStorage.setItem('token', data.token);
+          localStorage.setItem("userId", data.userId);
           alert("account successfully created!");
+          window.location.href = "../index.html"
         }else{
           alert("account creation unsuccessfull!");
         }

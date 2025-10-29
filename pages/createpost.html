@@ -40,8 +40,11 @@
         formData.append("file", file.files[0]); 
       }  
 
+      formData.append("userId", localStorage.getItem('userId'));
+
       fetch('http://localhost:8086/api/v1/posts', {
-        method: 'POST',  
+        method: 'POST', 
+        headers: { Authorization:'Bearer ' + localStorage.getItem('token') },
         body: formData
       }).then(res => {
         if(res.ok) {

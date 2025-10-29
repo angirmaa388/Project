@@ -59,7 +59,7 @@
     }, false)
   })
 })()
-</script>>
+</script>
 <script>
     const formLogIn = document.querySelector('#formLogIn');
 
@@ -71,14 +71,17 @@
         password: document.getElementById("password").value
       };
 
-      fetch('http://localhost:8085/api/v1/users/login', {
+      fetch('http://localhost:8086/api/v1/auth/Authenticate', {
         method: 'POST', 
         headers: {
           'Content-Type': 'application/json'
         }, 
         body: JSON.stringify(logIn)
-      }).then(res => {
-        if(res.ok) {
+      }).then(res => res.json()).then(data => {
+        if(data.token) {
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('userId', data.userId);
+          alert("Log In success!");
            window.location.href = "pages/home.html"
         }else{
           alert("Log In failed!");
