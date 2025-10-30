@@ -77,8 +77,8 @@
         <!-- Individual post-->
         <div class="mainPost" id = "postBodyDiv">
           <h2 class= "userName" id="userName"><strong>name</strong></h2>
-          <p id="PostComment">comment explanation</p>
-          <img src="" alt="PostImage">
+  
+          <img src="" class="img-fluid" alt="PostImage">
           <div class="reaction">
             <button class="btn btn-outline-primary btn-sm">Like</button>
             <button type="button" onclick="hideShow()" class="btn btn-outline-secondary" id="commentButton">Comment</button>
@@ -131,11 +131,13 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
+
       const postBodyDiv = document.getElementById("postBodyDiv")
       async function getPosts() {
       const url = "http://localhost:8086/api/v1/posts";
       const token = localStorage.getItem("token");
       const userId = localStorage.getItem("userId");
+
       console.log("user id", userId)
       if(userId){
         document.getElementById("userName").innerText="User id:" + userId;
@@ -155,18 +157,19 @@
     result.forEach(posts => {
       const newDiv = document.createElement("div");
       let fileHtml="";
-      newDiv.classList.add("mainPost");
-      
-          if(posts.fileType&&posts.fileType.startsWith("image")){
-          fileHtml=`<img src="${posts.filePath}" alt="PostImage">`;
-          }else if(posts.fileType&&posts.fileType.startsWith("video")){
+      const fullPath = "http://localhost:8086/api/v1/posts/files/" + posts.filePath;
+      if(posts.fileType.startsWith("image")){
+          fileHtml=`<img src="${posts.filePath}" class="img-fluid" alt="PostImage">`;
+          }else if(posts.fileType.startsWith("video")){
           fileHtml=`<video controls class="w-100">
                     <source src="${posts.filePath}" type="${posts.fileType}"></video>`;}
 
+      newDiv.classList.add("mainPost");
 
-      newDiv.innerHTML = `<h2 class= "userName"><strong>${posts.userName}</strong></h2>
+      newDiv.innerHTML = 
+      `<h2 class= "userName"><strong>${posts.userName}</strong></h2>
        <p >${posts.postText}</p> 
-       ${fileHtml}`
+      ${fileHtml}`
        postBodyDiv.appendChild(newDiv);
     });
       
