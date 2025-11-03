@@ -167,27 +167,37 @@
     console.error("Fetch error:", error);
   }
 }
-  function getlikes() {
+  async function getlikes() {
    const likeButton = document.querySelectorAll('.likeButton');
       
-      likeButton.forEach(button => {
-
+      likeButton.forEach(async button => {
+      const postId = button.dataset.postId;
       const likeCountElement = button.parentElement.querySelector('.likeCount');
 
+
       // Check if like count data exists in localStorage and set the count accordingly
-      let likeAmount = JSON.parse(localStorage.getItem('likeAmount')) || 0;
+      
+      
+      const response = await fetch(`http://localhost:8086/api/v1/likes/likesCount?postsId=${postId}`);
+      if(!response.ok){
+        throw new Error(`Response status: ${response.status}`);
+      }
+
+      let likeAmount = await response.json();
+      
       likeCountElement.innerText = likeAmount;
 
        // Listen for clicks on the like button and increment the like count
       button.addEventListener('click', async () => {
       likeAmount++;
       likeCountElement.innerText = likeAmount;
-      const postId = button.dataset.postId;
+      
       const userId = localStorage.getItem("userId");
 
       // Store the updated like count in localStorage
-      localStorage.setItem('likeAmount', JSON.stringify(likeAmount));
+      localStorage.setItem(`likeAmount_${postId}`, JSON.stringify(likeAmount));
       await likesdata(postId, userId);
+      
       });
     });
     }
