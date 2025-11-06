@@ -55,7 +55,7 @@
     </nav>
 <!-- main part-->
 <div class="container-fluid">
-  <div class="row justify-content-center">
+  <div class="row gx-0 align-items-start">
 
     <!-- Side bar left side-->
 
@@ -139,13 +139,13 @@
         <div class="reaction">
             <span class="align-baseline likeCount" data-post-id="${posts.postId}" >0</span>
             <button class="btn btn-outline-primary btn-sm likeButton" data-post-id="${posts.postId}" >Like</button>
-            <button type="button" class="btn btn-outline-secondary commentButton" onclick="hideShow()" data-post-id="${posts.postId}">Comment</button>
+            <button type="button" class="btn btn-outline-secondary commentButton"  data-post-id="${posts.postId}">Comment</button>
 
             <!-- Comment area-->
               <div class="form-floating commentPart"style = "display:none;">
-                <textarea class="form-control floatingTextarea" placeholder="Leave a comment here"></textarea>
+                <textarea class="form-control floatingTextarea commentText" placeholder="Leave a comment here"></textarea>
               <label for="floatingTextarea">Comments</label>
-              <button class="btn btn-primary" type="button">Post</button>
+              <button class="btn btn-primary postButton" type="button" data-post-id="${posts.postId}">Post</button>
 
                 <div class="allcomments">
 
@@ -156,11 +156,10 @@
 
           </div>
       `;
-       postBodyDiv.appendChild(newDiv);
+      
+       postBodyDiv.prepend(newDiv);
     });
-     getlikes();
-     getComments();
-
+     
     console.log(result);
   } catch (error) {
     console.error("Fetch error:", error);
@@ -222,26 +221,102 @@
   }
 }
 
-async function getComments() {
+async function postComments() {
+
       const commentButton = document.querySelectorAll(".commentButton");
 
       commentButton.forEach(button =>{
       button.addEventListener("click", () =>{
+        
+
         const commentPart= button.parentElement.querySelector(".commentPart");
         
         if (commentPart.style.display === "none") {
         commentPart.style.display = "block";
+
+        const postId = button.dataset.postId;
+        const allcomments = button.parentElement.querySelector(".allcomments");
+        loadComment(postId, allcomments);
+
         } else {
         commentPart.style.display = "none";
         }
       });
     });
 
+      
+      const postButton = document.querySelectorAll('.postButton');
+      
+      postButton.forEach(async button => {
+        button.addEventListener("click", async () => {
+      const url = "http://localhost:8086/api/v1/postComment/newComment";
+      const token = localStorage.getItem("token");
+      const userId = localStorage.getItem("userId");
+      const postId = button.dataset.postId;
+      const textArea = button.closest(".commentPart").querySelector(".commentText");
+      const commentText = textArea.value;
+      const allcomments = button.parentElement.querySelector(".allcomments");
+     
+  try {
+    const response = await fetch(`${url}?postId=${postId}&userId=${userId}&commentText=${encodeURIComponent(commentText)}`, {
+      method: 'POST',
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+      
+    });
+    if(response.ok){
+      const newDivCom = document.createElement("div");
+      newDivCom.innerHTML = 
+      `<h2 class= "userName"><strong>${localStorage.getItem("userName")}</strong></h2>
+       <p >${commentText}</p> `;
+
+      allcomments.prepend(newDivCom);
+      textArea.value = "";
+    }
+
+  } catch(error){
+    console.error("comment error:", error);
+  }
+  });
+      });
+    }
+
+      
+      async function loadComment(postId, allcomments){
+        allcomments.innerHTML = "";
+        const token = localStorage.getItem("token");
+
+        try {
+        const response = await fetch(`http://localhost:8086/api/v1/postComment/getPostComment?postId=${postId}`, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+      });
+        
+        const result = await response.json();
+    
+    result.forEach(postComment => {
+      const CommDiv = document.createElement("div");
+      CommDiv.innerHTML = 
+      `<h2 class= "userName"><strong>${postComment.userName}</strong></h2>
+       <p >${postComment.commentText}</p> `;
+
+      allcomments.prepend(CommDiv);
+  });
+
+        
+      }catch(error){
+        console.error("get comment error", error);
+      }
 }
   </script> 
   <script>
     window.onload=function(){
-      getPosts();
+      getPosts().then(()=>{
+        getlikes();
+     postComments();
+      });
     };
   </script>
  
