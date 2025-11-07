@@ -41,7 +41,7 @@
                 <li><a class="dropdown-item" href="createpost.html">Create new post</a></li>
                 <li><a class="dropdown-item" href="#">Profile</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Sign out</a></li>
+                <li><a class="dropdown-item logOut" href="#">Sign out</a></li>
               </ul>
             </li>
           </ul>
@@ -55,11 +55,11 @@
     </nav>
 <!-- main part-->
 <div class="container-fluid">
-  <div class="row gx-0 align-items-start">
+  <div class="d-flex flex-column flex-lg-row justify-content-between ">
 
     <!-- Side bar left side-->
 
-    <div class="col-lg-3 col-md-4 d-none d-md-block ">
+    <div class="col-lg-3 col-md-4 d-none d-md-block">
       <div class="leftbar">
           <h1 class="text">text</h1>
           <p>text</p>
@@ -72,11 +72,6 @@
       <div class="feed">
         <!-- Individual post-->
         <div class="mainPost" id = "postBodyDiv">
-          
-  
-          
-          
-          
         </div>
         <!-- main post-->
       </div>
@@ -89,7 +84,6 @@
       <div class="rightbar">
         <h3 class="text">text</h3>
         <p>text</p>
-        
       </div>
     </div>
 
@@ -311,7 +305,36 @@ async function postComments() {
       }
 }
   </script> 
+  
   <script>
+    const logOutButton = document.querySelector('.logOut');
+    
+
+    logOutButton.addEventListener('click', event => {
+      event.preventDefault();
+      const token = localStorage.getItem("token");
+
+      fetch('http://localhost:8086/api/v1/auth/logOut', {
+        method: 'POST', 
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": `Bearer ${token}`
+
+        }, 
+        
+      }).then(response => {
+        if(response.ok) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('userId');
+           window.location.href = "../index.html"
+        }else{
+          alert("Log out failed!");
+        }
+      })
+        .catch(error => alert("network error!"));
+      });
+  </script>
+ <script>
     window.onload=function(){
       getPosts().then(()=>{
         getlikes();
@@ -319,7 +342,6 @@ async function postComments() {
       });
     };
   </script>
- 
 
 </body>
 
