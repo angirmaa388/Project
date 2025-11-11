@@ -12,7 +12,7 @@
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
         <!-- Logo image-->
-        <a class="navbar-brand" href="index.html">
+        <a class="navbar-brand" href="home.html">
           <img src="../imgs/logo.png" alt="Logo" width="150">
         </a>
 
@@ -26,7 +26,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="index.html">
+              <a class="nav-link active" aria-current="page" href="home.html">
                 <strong>Home</strong></a>
             </li>
             
@@ -39,7 +39,7 @@
               </a>
               <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="createpost.html">Create new post</a></li>
-                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><a class="dropdown-item" onclick="getUserStatus()" >Profile</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item logOut" href="#">Sign out</a></li>
               </ul>
@@ -91,6 +91,39 @@
 </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    async function getUserStatus() {
+      const token = localStorage.getItem("token");
+      const userId = localStorage.getItem("userId");
+  try {
+    const response = await fetch(`http://localhost:8086/api/v1/users/${userId}`, {
+     
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    const result = await response.json();
+    localStorage.setItem("status", result.status);
+    
+    console.log(result);
+    const status = localStorage.getItem("status");
+  if(status.toLowerCase() === "user"){
+    window.location.href="userprofile.html"
+  }else{
+    window.location.href="companyprofile.html"
+  }
+  } catch (error) {
+    console.error("Fetch error:", error);
+  }
+     
+}
+  
+    
+  </script>
 
     <script>
       async function getPosts() {
@@ -334,7 +367,10 @@ async function postComments() {
         .catch(error => alert("network error!"));
       });
   </script>
- <script>
+ 
+
+  
+  <script>
     window.onload=function(){
       getPosts().then(()=>{
         getlikes();
