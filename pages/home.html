@@ -46,10 +46,11 @@
             </li>
           </ul>
            <!-- Searching part -->
-          <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+          <form class="d-flex" onsubmit = "searchHandler(event)" role="search">
+            <input class="form-control me-2" type="search" id = "searchInput" placeholder="Search" aria-label="Search" />
             <button class="btn btn-outline-success" type="submit">Search</button>
           </form>
+
         </div>
       </div>
     </nav>
@@ -72,6 +73,7 @@
       <div class="feed">
         <!-- Individual post-->
         <div class="mainPost" id = "postBodyDiv">
+
         </div>
         <!-- main post-->
       </div>
@@ -345,6 +347,7 @@ async function postComments() {
 
     logOutButton.addEventListener('click', event => {
       event.preventDefault();
+      
       const token = localStorage.getItem("token");
 
       fetch('http://localhost:8086/api/v1/auth/logOut', {
@@ -366,6 +369,83 @@ async function postComments() {
       })
         .catch(error => alert("network error!"));
       });
+  </script>
+  <script>
+    
+    async function searchHandler(event) {
+      event.preventDefault();
+
+      const searchResultDiv = document.getElementById("postBodyDiv")
+      searchResultDiv.innerHTML="";
+      const searchInput = document.getElementById("searchInput");
+      const value = searchInput.value;
+      if (value.length < 1) {
+        searchResultDiv.textContent = "no result"
+        return ;
+      }
+        const token = localStorage.getItem("token");
+
+        try {
+        const response = await fetch(`http://localhost:8086/api/v1/posts/search?keyword=${value}`, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+      });
+        const result = await response.json();
+        if(!result || result.length === 0){
+          searchResultDiv.textContent = "no result";
+        }else{
+          result.forEach(posts =>{
+            const newDiv = document.createElement("div");
+            let fileHtml="";
+
+      
+      if(posts.fileType?.startsWith("image")){
+          fileHtml=`<img src="${posts.filePath}" class="img-fluid" alt="PostImage">`;
+          }else if(posts.fileType?.startsWith("video")){
+          fileHtml=`<video controls class="w-100">
+                    <source src="${posts.filePath}" type="${posts.fileType}"></video>`;}
+
+            newDiv.classList.add("mainPost");
+            newDiv.innerHTML = 
+
+      `<h2 class= "userName"><strong>${posts.userName}</strong></h2>
+       <p >${posts.postText}</p> 
+      ${fileHtml}
+      
+        <div class="reaction">
+            <span class="align-baseline likeCount" data-post-id="${posts.postId}" >0</span>
+            <button class="btn btn-outline-primary btn-sm likeButton" data-post-id="${posts.postId}" >Like</button>
+            <button type="button" class="btn btn-outline-secondary commentButton"  data-post-id="${posts.postId}">Comment</button>
+
+            <!-- Comment area-->
+              <div class="form-floating commentPart"style = "display:none;">
+                <textarea class="form-control floatingTextarea commentText" placeholder="Leave a comment here"></textarea>
+              <label for="floatingTextarea">Comments</label>
+              <button class="btn btn-primary postButton" type="button" data-post-id="${posts.postId}">Post</button>
+
+                <div class="allcomments">
+
+                </div>
+
+              </div>
+            <!-- Comment area finishes-->
+
+          </div>
+      `;
+      
+       searchResultDiv.prepend(newDiv);
+    });
+        }
+        
+      }catch(error){
+        console.error("Error searching" , error);
+
+      
+    }
+  }
+
+
   </script>
  
 

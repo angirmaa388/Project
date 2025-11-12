@@ -63,8 +63,7 @@
       box-shadow: 3px 3px 3px  rgba(0, 0, 0, 0.05);
       border-radius: 20px;
       padding: 20px;
-      height: auto;
-      overflow-y: auto;
+      min-height: 100vh;
       
     }
 
@@ -76,9 +75,8 @@
       box-shadow: 3px 3px 3px  rgba(0, 0, 0, 0.05);
       border-radius: 20px;
       padding: 20px;
-      height: auto;
-      overflow-y: auto;
-     
+      min-height: 100vh;
+      
     }
     @media (min-width: 992px) {
       .row {
