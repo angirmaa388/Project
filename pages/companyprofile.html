@@ -90,6 +90,7 @@
       const token = localStorage.getItem("token");
       const userId = localStorage.getItem("userId");
       
+      
   try {
     const response = await fetch(`http://localhost:8086/api/v1/users/${userId}`, {
      
@@ -118,14 +119,10 @@
   }
 }
     </script>
-    <script>
-      window.onload=function(){
-      getComProfileInfo()
-    }
-    </script>
+    
 
      <script>
-       async function getInfoPostLike() {
+      async function getInfoPostLike() {
       const postLikeInfo = document.getElementById("postLikeInfo")
       const token = localStorage.getItem("token");
       const userId = localStorage.getItem("userId");
@@ -140,39 +137,66 @@
     if (!response.ok) {
       throw new Error(`Response status: ${response.status}`);
     }
-
+    
     const result = await response.json();
+    const companyPosts = result;
+
+    const allTags = companyPosts.map(posts => {
+      const tag = posts.postText.match(/@\w+/g);
+      return tag ? tag[0]:null;
+
+    })
+    .filter(Boolean);
+    const uniqueTags=[...new Set (allTags)];
+    const tags = uniqueTags.slice(-10);
+  
+    let tableRows = "";
+    tags.forEach((tag, index)=>{
+      const userPosts = companyPosts.filter(post =>
+        post.status==="user"&&post.postText.includes(tag)
+      );
+
+    if(userPosts.length>0){
+      userPosts.sort((a,b)=>b.likesAmount - a.likesAmount);
+      const winner = userPosts[0];
+      tableRows+=`
+        <tr>
+          <th scope="row">${index + 1}</th>
+          <th scope="col">${tag}</th>
+          <th scope="col">${winner.userName}</th>
+          <th scope="col">${winner.likesAmount}</th>
+          </tr>`
+
+    }else{
+      tableRows+=`
+        <tr>
+          <th scope="row">${index + 1}</th>
+          <th scope="col">${tag}</th>
+          <th scope="col">0</th>
+          <th scope="col">0</th>
+          </tr>`
+
+    }
+});
+
     const newDiv = document.createElement("div");
-    let fileHtml="";
     newDiv.innerHTML = 
       `
         <table class="table">
-                                  <thead>
-                                    <tr>
-                                      <th scope="col">#</th>
-                                      <th scope="col">Compaign name</th>
-                                      <th scope="col">Most liked post</th>
-                                      
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <th scope="row">1</th>
-                                      <td>@CoffeeDay</td>
-                                      <td>G.Angirmaa link to go profile</td>
-                                    </tr>
-                                    <tr>
-                                      <th scope="row">2</th>
-                                      <td>@NewTaste</td>
-                                      <td>Thornton</td>
-                                    </tr>
-                                    <tr>
-                                      <th scope="row">3</th>
-                                      <td>John</td>
-                                      <td>Doe</td>
-                                    </tr>
-                                  </tbody>
-                                </table>
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Compaign name</th>
+              <th scope="col">Winner name</th> 
+              <th scope="col">Like amount</th>                           
+            </tr>
+          </thead>
+          <tbody>
+            ${tableRows}
+          </tbody>
+
+        </table>
+
       `;
       
        postLikeInfo.prepend(newDiv);
@@ -183,6 +207,13 @@
   }
 }
     </script>
+    <script>
+      window.onload=function(){
+      getComProfileInfo()
+      getInfoPostLike()
+    }
+    </script>
+
 
     <script>
     const logOutButton = document.querySelector('.logOut');

@@ -153,9 +153,9 @@
       let fileHtml="";
 
       const fullPath = "http://localhost:8086/api/v1/posts/files/" + posts.filePath;
-      if(posts.fileType.startsWith("image")){
+      if(posts.fileType&&posts.fileType.startsWith("image")){
           fileHtml=`<img src="${posts.filePath}" class="img-fluid" alt="PostImage">`;
-          }else if(posts.fileType.startsWith("video")){
+          }else if(posts.fileType&&posts.fileType.startsWith("video")){
           fileHtml=`<video controls class="w-100">
                     <source src="${posts.filePath}" type="${posts.fileType}"></video>`;}
 
@@ -370,6 +370,7 @@ async function postComments() {
         .catch(error => alert("network error!"));
       });
   </script>
+
   <script>
     
     async function searchHandler(event) {
@@ -403,9 +404,9 @@ async function postComments() {
             let fileHtml="";
 
       const fullPath = "http://localhost:8086/api/v1/posts/files/" + posts.filePath;
-      if(posts.fileType.startsWith("image")){
+      if(posts.fileType&&posts.fileType.startsWith("image")){
           fileHtml=`<img src="${posts.filePath}" class="img-fluid" alt="PostImage">`;
-          }else if(posts.fileType.startsWith("video")){
+          }else if(posts.fileType&&posts.fileType.startsWith("video")){
           fileHtml=`<video controls class="w-100">
                     <source src="${posts.filePath}" type="${posts.fileType}"></video>`;}
 
@@ -451,9 +452,6 @@ async function postComments() {
 
 
   </script>
- 
-
-  
   <script>
     window.onload=function(){
       getPosts().then(()=>{
@@ -462,7 +460,10 @@ async function postComments() {
       });
     };
   </script>
+ 
 
+  
+  
 </body>
 
 </html>
