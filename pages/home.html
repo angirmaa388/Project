@@ -378,9 +378,12 @@ async function postComments() {
       const searchResultDiv = document.getElementById("postBodyDiv")
       searchResultDiv.innerHTML="";
       const searchInput = document.getElementById("searchInput");
-      const value = searchInput.value;
+      const value = searchInput.value.trim();
       if (value.length < 1) {
-        searchResultDiv.textContent = "no result"
+        searchResultDiv.innerHTML="";
+        await getPosts();
+        getlikes();
+        postComments();
         return ;
       }
         const token = localStorage.getItem("token");
@@ -393,22 +396,21 @@ async function postComments() {
       });
         const result = await response.json();
         if(!result || result.length === 0){
-          searchResultDiv.textContent = "no result";
+          searchResultDiv.textContent = "There is no result";
         }else{
           result.forEach(posts =>{
             const newDiv = document.createElement("div");
             let fileHtml="";
 
-      
-      if(posts.fileType?.startsWith("image")){
+      const fullPath = "http://localhost:8086/api/v1/posts/files/" + posts.filePath;
+      if(posts.fileType.startsWith("image")){
           fileHtml=`<img src="${posts.filePath}" class="img-fluid" alt="PostImage">`;
-          }else if(posts.fileType?.startsWith("video")){
+          }else if(posts.fileType.startsWith("video")){
           fileHtml=`<video controls class="w-100">
                     <source src="${posts.filePath}" type="${posts.fileType}"></video>`;}
 
-            newDiv.classList.add("mainPost");
-            newDiv.innerHTML = 
-
+      newDiv.classList.add("mainPost");
+      newDiv.innerHTML = 
       `<h2 class= "userName"><strong>${posts.userName}</strong></h2>
        <p >${posts.postText}</p> 
       ${fileHtml}
@@ -436,6 +438,8 @@ async function postComments() {
       
        searchResultDiv.prepend(newDiv);
     });
+          getlikes();
+          postComments();
         }
         
       }catch(error){
