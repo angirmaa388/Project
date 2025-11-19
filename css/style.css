@@ -51,11 +51,8 @@
 
 /*Home page style*/
 
-	.container-fluid {
-      background-color: #f8f9fa;
-    }
 
-    .leftbar{
+   .leftbar{
       background-color: #ffffff;
       backdrop-filter: blur(8px);
       border-top: 1px solid rgba(255, 255, 255, 0.4);
@@ -130,9 +127,7 @@
     }
 
     /*company account page style*/
-    body{margin-top:20px;
-background:#eee;
-}
+   
 
 h2 {
     clear: both;
