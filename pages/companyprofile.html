@@ -6,9 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.css">
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
   <title>Company profile</title>
+  <style>
+    h2 {
+    clear: both;
+    font-size: 1.8em;
+    margin-bottom: 10px;
+    padding: 10px 0 10px 30px;
+}
+
+h3 > span {
+    border-bottom: 2px solid #C2C2C2;
+    display: inline-block;
+    padding: 0 5px 5px;
+}
+.CompanyInformation .userName{
+      font-size: 45px !important; 
+      font-family:'Roboto', sans-serif !important; 
+      color: #281B55 !important;
+}
+  </style>
   </head>
   <body class="body">
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -18,41 +36,7 @@
           <img src="../imgs/logo.png" alt="Logo" width="150">
         </a>
 
-        <!-- toggle button -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <!-- Navbar part -->
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="home.html">
-                <strong>Home</strong></a>
-            </li>
-            
-            <!-- Profile -->
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle d-flex align-items-center" role="button"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="../imgs/profile.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                <strong>About</strong>
-              </a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="createpost.html">Create new post</a></li>
-                <li><a class="dropdown-item" href="#">Profile</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item logOut" href="#">Sign out</a></li>
-              </ul>
-            </li>
-          </ul>
-           <!-- Searching part -->
-          <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-            <button class="btn btn-outline-success" type="submit">Search</button>
-          </form>
-        </div>
+       
       </div>
     </nav>
 <!-- main part starts-->
@@ -107,9 +91,9 @@
     const newDiv = document.createElement("div");
     let fileHtml="";
     newDiv.innerHTML = 
-      `<h3 class="mb-3 userName">${result.userName}</h3>
-      <p class="small mb-3">Email: ${result.email}</p>
-      <p class="small mb-3">Status: ${result.status}</p> 
+      `<h3 class="mb-3 userName" style="font-size: 25px; font-family: 'Roboto', sans-serif; color: navy;">${result.userName}</h3>
+      <p class="small mb-3" style="font-size: 18px; font-family: 'Roboto', sans-serif; ">Email: ${result.email}</p>
+      <p class="small mb-3" style="font-size: 18px; font-family: 'Roboto', sans-serif; ">Status: ${result.status}</p> 
       `;
       
        CompanyInformation.prepend(newDiv);
@@ -162,10 +146,10 @@
       const winner = userPosts[0];
       tableRows+=`
         <tr>
-          <th scope="row">${index + 1}</th>
-          <th scope="col">${tag}</th>
-          <th scope="col">${winner.userName}</th>
-          <th scope="col">${winner.likesAmount}</th>
+          <th scope="row" >${index + 1}</th>
+          <th scope="col" style="font-size: 18px; font-family: 'Roboto', sans-serif; ">${tag}</th>
+          <th scope="col" style="font-size: 18px; font-family: 'Roboto', sans-serif; ">${winner.userName}</th>
+          <th scope="col" style="font-size: 18px; font-family: 'Roboto', sans-serif; ">${winner.likesAmount}</th>
           </tr>`
 
     }else{
@@ -186,10 +170,10 @@
         <table class="table">
           <thead>
             <tr>
-              <th scope="col">#</th>
-              <th scope="col">Compaign name</th>
-              <th scope="col">Winner name</th> 
-              <th scope="col">Like amount</th>                           
+              <th scope="col" ></th>
+              <th scope="col" style="font-size: 19px; font-family: 'Roboto', sans-serif; color: navy;" >Compaign name</th>
+              <th scope="col" style="font-size: 19px; font-family: 'Roboto', sans-serif; color: navy;" >Winner name</th> 
+              <th scope="col" style="font-size: 19px; font-family: 'Roboto', sans-serif; color: navy;" >Like amount</th>                           
             </tr>
           </thead>
           <tbody>

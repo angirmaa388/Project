@@ -2,52 +2,11 @@
 
 /*SignUp page style*/
 
-#createacchead{
-	color: navy;
-}
-#submit{
-	background-color: navy;
-	
-}
-#passwordReset{
-	padding-left: 80px;
-	color: darkred;
 
-}
 
 /*LogIn page style*/
 
-#loginbutton{
-	background-color: navy;
-	font-weight: bold; 
-	width: 100px;
-}
 
-
-.logInButtonDiv{
-	
-  display: flex;
-  flex-direction: row;
-}
-
-#logInhead{
-	padding-left: 50px;
-	color: navy;
-	padding-top: 20px;
-	padding-bottom: 20px;
-}
-
-#createNewAcc{
-	width: 100px;
-	background-color: #401694;
-	font-weight: bold; 
-}
-
-.signUpButtonDiv{
-	margin-top: 10px;
-  display: flex;
-  flex-direction: row;
-}
 
 /*Home page style*/
 
@@ -57,17 +16,6 @@
     /*company account page style*/
    
 
-h2 {
-    clear: both;
-    font-size: 1.8em;
-    margin-bottom: 10px;
-    padding: 10px 0 10px 30px;
-}
 
-h3 > span {
-    border-bottom: 2px solid #C2C2C2;
-    display: inline-block;
-    padding: 0 5px 5px;
-}
 
 /* USER PROFILE */
