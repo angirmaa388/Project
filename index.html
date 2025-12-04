@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
   <title>LogIn</title>
+  <!-- Styling the page-->
   <style>
     #loginbutton{
   background-color: navy;
@@ -40,12 +41,14 @@
   flex-direction: row;
 }
   </style>
-
+<!-- Finishes the styling-->
   </head>
+
   <body>
     <div class="d-flex justify-content-center align-items-center vh-100 bg-light">
   <div class="card p-4 shadow" style="width: 520px; height: 420px;">
      <h2 class="text-center fw-bold" id="logInhead" style="font-size: 35px;font-family: 'Roboto', sans-serif; ">Welcome to PromoPlay</h2>
+     <!-- Log in form -->
     <form class="needs-validation" id = "formLogIn">
   <div class="row mb-3">
     <label for="inputEmail" class="col-sm-2 col-form-label"></label>
@@ -60,14 +63,15 @@
       <input type="password" class="form-control" id="password" style="font-size: 20px;font-family: 'Roboto', sans-serif;"placeholder="New password" minlength="6" required>
     </div>
   </div>
+  <!-- Log in and sign up button -->
   <div class="logInButtonDiv">
   <button type="submit" class="btn btn-primary" id="loginbutton" style="font-size: 15px;font-family: 'Roboto', sans-serif;">Log in</button>
   </div>
   <div class="signUpButtonDiv">
     <a href="pages/signup.html" class="btn btn-primary" tabindex="-1" role="button" id="createNewAcc"style="font-size: 15px;font-family: 'Roboto', sans-serif;">Sign Up</a>
-  
   </div>
 </form>
+<!-- Form finishes -->
  </div>
 </div>
 
@@ -93,6 +97,7 @@
 </script>
 <script>
     const formLogIn = document.querySelector('#formLogIn');
+    //take log in form 
 
     formLogIn.addEventListener('submit', event => {
       event.preventDefault();
@@ -100,22 +105,28 @@
       const logIn = {
         email: document.getElementById("email").value, 
         password: document.getElementById("password").value
-      };
+      }; 
+      //log in data 
 
       fetch('http://localhost:8086/api/v1/auth/Authenticate', {
+        //fetch the server to post the data 
         method: 'POST', 
         headers: {
           'Content-Type': 'application/json'
         }, 
         body: JSON.stringify(logIn)
       }).then(res => res.json()).then(data => {
+        //if the data is correct it will set token and user id 
         if(data.token) {
           localStorage.setItem('token', data.token);
           localStorage.setItem('userId', data.userId);
           alert("Log In success!");
+          //show the log in sucess message 
+          //shift to the home page
            window.location.href = "pages/home.html"
         }else{
           alert("Log In failed!");
+          //if the if data response 
         }
       })
         .catch(error => alert("network error!"));
