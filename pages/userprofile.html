@@ -64,24 +64,27 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-       async function getUserProfileInfo() {
+      //selecting all the user information 
+      async function getUserProfileInfo() {
       const UserInformation = document.getElementById("UserInfo")
       const token = localStorage.getItem("token");
       const userId = localStorage.getItem("userId");
       
   try {
     const response = await fetch(`http://localhost:8086/api/v1/users/${userId}`, {
-     
+     //fetch the user information by userId
       headers: {
         "Authorization": `Bearer ${token}`
+        //checking the token 
       }
     });
     if (!response.ok) {
       throw new Error(`Response status: ${response.status}`);
     }
-
+    //if the response not ok there will an error message  
     const result = await response.json();
     const newDiv = document.createElement("div");
+    //if it gets the information, it will put them in the new div 
     let fileHtml="";
     newDiv.innerHTML = 
       `<h1 class="mb-3 userName" >${result.userName}</h1>
@@ -98,33 +101,39 @@
 }
     </script>
     <script>
+      //window will load to get user profile info 
       window.onload=function(){
       getUserProfileInfo()
     }
     </script>
     <script>
     const logOutButton = document.querySelector('.logOut');
-    
+    // selecting the log out by querySelector 
 
     logOutButton.addEventListener('click', event => {
       event.preventDefault();
+      //using eventlistener to perform the log out button  
       const token = localStorage.getItem("token");
 
       fetch('http://localhost:8086/api/v1/auth/logOut', {
+        //here it will fetch the log out request 
         method: 'POST', 
         headers: {
           'Content-Type': 'application/json',
           "Authorization": `Bearer ${token}`
 
         }, 
-        
+        //checking this with the token 
       }).then(response => {
         if(response.ok) {
           localStorage.removeItem('token');
           localStorage.removeItem('userId');
            window.location.href = "../index.html"
+           //if the response ok, local storage remove the token then 
+           //it will load the index.html window 
         }else{
           alert("Log out failed!");
+          //if the request failed there will be alert message request failed 
         }
       })
         .catch(error => alert("network error!"));

@@ -196,22 +196,28 @@
     async function getUserStatus() {
       const token = localStorage.getItem("token");
       const userId = localStorage.getItem("userId");
+      //get the token and userid from the local storage 
   try {
     const response = await fetch(`http://localhost:8086/api/v1/users/${userId}`, {
      
       headers: {
         "Authorization": `Bearer ${token}`
+        //get the user id data 
       }
     });
     if (!response.ok) {
       throw new Error(`Response status: ${response.status}`);
+      //if the response no ok it will give the response error 
     }
 
     const result = await response.json();
+    //else it will wait the json data 
     localStorage.setItem("status", result.status);
-    
+    //get the status data 
     console.log(result);
     const status = localStorage.getItem("status");
+    //And if the user is normal user, it will set the user profile 
+    //else it will set company profile 
   if(status.toLowerCase() === "user"){
     window.location.href="userprofile.html"
   }else{
@@ -228,11 +234,13 @@
 
     <script>
       async function getPosts() {
+      //get post function 
       const postBodyDiv = document.getElementById("postBodyDiv")
+      //selecting the postBodyDive 
       const url = "http://localhost:8086/api/v1/posts";
       const token = localStorage.getItem("token");
       const userId = localStorage.getItem("userId");
-      console.log("GET POSTS START"); 
+      //selecting the local host and userid, token 
       
   try {
     const response = await fetch(url, {
@@ -240,29 +248,40 @@
       headers: {
         "Authorization": `Bearer ${token}`
       }
+      //try block fetch the url data 
     });
     if (!response.ok) {
       throw new Error(`Response status: ${response.status}`);
+      //if the result not ok it, it will give error status 
     }
 
     const result = await response.json();
+    //else it will wait the json response 
     result.forEach(posts => {
+      //using forEch block to make each post seperate 
       const newDiv = document.createElement("div");
+      //having a new div for the each post 
       
       let fileHtml="";
 
       const fullPath = "http://localhost:8086/api/v1/posts/files/" + posts.filePath;
+      //getting the full path of the post file 
       if(posts.fileType&&posts.fileType.startsWith("image")){
+        //if the post's file type start with image 
+        //it will go to the image 
+        //else it will go to video 
           fileHtml=`<img src="${posts.filePath}" class="img-fluid" alt="PostImage">`;
           }else if(posts.fileType&&posts.fileType.startsWith("video")){
           fileHtml=`<video controls class="w-100">
                     <source src="${posts.filePath}" type="${posts.fileType}"></video>`;}
-
       newDiv.classList.add("mainPost");
+      //this newDive calss list added to the main post area 
+      //in newDive inner html information will be post user name 
+      //also post's text 
       newDiv.innerHTML = 
       `<h2 class= "userName" style="font-size: 22px; font-family: 'Roboto', sans-serif; color: #281B55;"><strong>${posts.userName}</strong></h2>
        <p style="font-size: 18px; font-family: 'Roboto', sans-serif; color: #281B55;">${posts.postText}</p> 
-      ${fileHtml}
+      ${fileHtml} 
       
         <div class="reaction">
             <span class="align-baseline likeCount" data-post-id="${posts.postId}" ><strong>0</strong></span>
@@ -286,15 +305,18 @@
       `;
       
        postBodyDiv.prepend(newDiv);
+       //all the data in newDive will added to the postBodyDiv 
     });
      
     console.log(result);
   } catch (error) {
     console.error("Fetch error:", error);
+    //if there is any error, it will catch the error 
   }
 }
   async function getlikes() {
    const likeButton = document.querySelectorAll('.likeButton');
+   //selecting the like button 
       
       likeButton.forEach(async button => {
       const postId = button.dataset.postId;
@@ -305,6 +327,7 @@
       
       
       const response = await fetch(`http://localhost:8086/api/v1/likes/likesCount?postsId=${postId}`);
+      // getting the likeamount data 
       if(!response.ok){
         throw new Error(`Response status: ${response.status}`);
       }
@@ -313,16 +336,17 @@
       
       likeCountElement.innerText = likeAmount;
 
-       // Listen for clicks on the like button and increment the like count
+      // Listen for clicks on the like button 
+      //and increment the like count
       button.addEventListener('click', async () => {
       likeAmount++;
       likeCountElement.innerText = likeAmount;
       
       const userId = localStorage.getItem("userId");
-
       // Store the updated like count in localStorage
       localStorage.setItem(`likeAmount_${postId}`, JSON.stringify(likeAmount));
       await likesdata(postId, userId);
+      //each button will wait the data postID and UserId
       
       });
     });
@@ -330,20 +354,21 @@
        async function likesdata(postId, userId) {
       const url = "http://localhost:8086/api/v1/likes/newLikes";
       const token = localStorage.getItem("token");
-      
-      
-      
+      //it will get all the new likes 
   try {
     const response = await fetch(`${url}?postId=${postId}&userId=${userId}`, {
       method: 'POST',
+      //and post them 
       headers: {
         "Authorization": `Bearer ${token}`
       }
+      //it will be authorized by the user token 
     });
 
     if (!response.ok) {
       throw new Error(`Response status: ${response.status}`);
     }
+    //if response is not ok it will say the response status 
   } catch(error){
     console.error("like error:", error);
   }
@@ -352,17 +377,20 @@
 async function postComments() {
 
       const commentButton = document.querySelectorAll(".commentButton");
-
+      //selecting the comment button 
       commentButton.forEach(button =>{
       button.addEventListener("click", () =>{
         
 
         const commentPart= button.parentElement.querySelector(".commentPart");
-        
+        //selecting the comment part area 
+        //when user click the comment button 
+        //it will display the comment part 
         if (commentPart.style.display === "none") {
         commentPart.style.display = "block";
 
         const postId = button.dataset.postId;
+        //here it's setting the all previous comments 
         const allcomments = button.parentElement.querySelector(".allcomments");
         loadComment(postId, allcomments);
 
@@ -374,9 +402,10 @@ async function postComments() {
 
       
       const postButton = document.querySelectorAll('.postButton');
-      
+      //here sleceting the comment post button 
       postButton.forEach(async button => {
         button.addEventListener("click", async () => {
+          //for each comment post button click 
       const url = "http://localhost:8086/api/v1/postComment/newComment";
       const token = localStorage.getItem("token");
       const userId = localStorage.getItem("userId");
@@ -384,23 +413,28 @@ async function postComments() {
       const textArea = button.closest(".commentPart").querySelector(".commentText");
       const commentText = textArea.value;
       const allcomments = button.parentElement.querySelector(".allcomments");
+      //selecting all the elements that needs 
      
   try {
     const response = await fetch(`${url}?postId=${postId}&userId=${userId}&commentText=${encodeURIComponent(commentText)}`, {
       method: 'POST',
+      //here it's posting the new comment 
       headers: {
         "Authorization": `Bearer ${token}`
       }
+      //it will be authorized by the user token
       
     });
     if(response.ok){
       const newDivCom = document.createElement("div");
+      //if the response ok it will set the data in the newDiv 
       newDivCom.innerHTML = 
       `<h2 class= "userName" ><strong>${localStorage.getItem("userName")}</strong></h2>
        <p class="postCommentsingle">${commentText}</p> `;
 
       allcomments.prepend(newDivCom);
       textArea.value = "";
+      //it will add the comments 
     }
 
   } catch(error){
@@ -414,18 +448,22 @@ async function postComments() {
       async function loadComment(postId, allcomments){
         allcomments.innerHTML = "";
         const token = localStorage.getItem("token");
+        //here it will load all the comments 
 
         try {
         const response = await fetch(`http://localhost:8086/api/v1/postComment/getPostComment?postId=${postId}`, {
       headers: {
         "Authorization": `Bearer ${token}`
       }
+      //getting the post comments 
       });
         
         const result = await response.json();
+        //wait json result 
     
     result.forEach(postComment => {
       const CommDiv = document.createElement("div");
+      //each comment will load inside the new div
       CommDiv.innerHTML = 
       `<h2 class= "userName"><strong>${postComment.userName}</strong></h2>
        <p class="postCommentsingle">${postComment.commentText}</p> `;
@@ -436,25 +474,26 @@ async function postComments() {
         
       }catch(error){
         console.error("get comment error", error);
+        //if there is any error, catch the error 
       }
 }
   </script> 
   
   <script>
     const logOutButton = document.querySelector('.logOut');
-    
-
+    // selecting the log out by querySelector
     logOutButton.addEventListener('click', event => {
       event.preventDefault();
-      
+      //using eventlistener to perform the log out button 
       const token = localStorage.getItem("token");
 
       fetch('http://localhost:8086/api/v1/auth/logOut', {
+        //here it will fetch the log out request
         method: 'POST', 
         headers: {
           'Content-Type': 'application/json',
           "Authorization": `Bearer ${token}`
-
+          //checking this with the token 
         }, 
         
       }).then(response => {
@@ -462,8 +501,11 @@ async function postComments() {
           localStorage.removeItem('token');
           localStorage.removeItem('userId');
            window.location.href = "../index.html"
+           //if the response ok, local storage remove the token then 
+           //it will load the index.html window 
         }else{
           alert("Log out failed!");
+          //if the request failed there will be alert message request failed
         }
       })
         .catch(error => alert("network error!"));
@@ -478,8 +520,11 @@ async function postComments() {
       const searchResultDiv = document.getElementById("postBodyDiv")
       searchResultDiv.innerHTML="";
       const searchInput = document.getElementById("searchInput");
+      //selecting the elements
       const value = searchInput.value.trim();
+      //removing the key values spaces
       if (value.length < 1) {
+        //if the value is more than 1 it will search
         searchResultDiv.innerHTML="";
         await getPosts();
         getlikes();
@@ -492,15 +537,22 @@ async function postComments() {
         const response = await fetch(`http://localhost:8086/api/v1/posts/search?keyword=${value}`, {
       headers: {
         "Authorization": `Bearer ${token}`
+        //fetching data that included key word
       }
       });
         const result = await response.json();
+        //wait the json result 
         if(!result || result.length === 0){
           searchResultDiv.textContent = "There is no result";
+          //if the result is equals to 0, 
+          //there will be text that say no result found 
         }else{
+          //else result will load by each result post 
+          //and it will be inside the new div in home page
           result.forEach(posts =>{
             const newDiv = document.createElement("div");
             let fileHtml="";
+            //here it's getting all the post data 
 
       const fullPath = "http://localhost:8086/api/v1/posts/files/" + posts.filePath;
       if(posts.fileType&&posts.fileType.startsWith("image")){
@@ -537,10 +589,11 @@ async function postComments() {
       `;
       
        searchResultDiv.prepend(newDiv);
+       //it will add the new div search result 
     });
           getlikes();
           postComments();
-        }
+        } //here it's getting the likes and comments for the result 
         
       }catch(error){
         console.error("Error searching" , error);
@@ -548,7 +601,6 @@ async function postComments() {
       
     }
   }
-
 
   </script>
   <script>

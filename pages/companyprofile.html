@@ -70,6 +70,7 @@ h3 > span {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
+      //selecting all the user information 
        async function getComProfileInfo() {
       const CompanyInformation = document.getElementById("CompanyInfo")
       const token = localStorage.getItem("token");
@@ -78,17 +79,20 @@ h3 > span {
       
   try {
     const response = await fetch(`http://localhost:8086/api/v1/users/${userId}`, {
-     
+     //fetch the user information by userId
       headers: {
         "Authorization": `Bearer ${token}`
+        //checking the token
       }
     });
     if (!response.ok) {
       throw new Error(`Response status: ${response.status}`);
+      //if the response not ok there will an error message  
     }
 
     const result = await response.json();
     const newDiv = document.createElement("div");
+    //if it gets the information, it will put them in the new div 
     let fileHtml="";
     newDiv.innerHTML = 
       `<h3 class="mb-3 userName" style="font-size: 25px; font-family: 'Roboto', sans-serif; color: navy;">${result.userName}</h3>
@@ -107,10 +111,12 @@ h3 > span {
     
 
      <script>
+      
       async function getInfoPostLike() {
       const postLikeInfo = document.getElementById("postLikeInfo")
       const token = localStorage.getItem("token");
       const userId = localStorage.getItem("userId");
+      //Getting the elements and user id and token from loacl storage
       
   try {
     const response = await fetch(`http://localhost:8086/api/v1/posts`, {
@@ -118,32 +124,44 @@ h3 > span {
       headers: {
         "Authorization": `Bearer ${token}`
       }
+      //requesting to get all post 
     });
     if (!response.ok) {
       throw new Error(`Response status: ${response.status}`);
+      //if there is error, it will show the error status 
     }
-    
+    //NOTE: 
+      //TO code the most liked post, I got some help from openAI chatGPT /only this part/
     const result = await response.json();
     const companyPosts = result;
-
+    //it will wait the json result 
     const allTags = companyPosts.map(posts => {
-      const tag = posts.postText.match(/@\w+/g);
-      return tag ? tag[0]:null;
+    const tag = posts.postText.match(/@\w+/g);
+    return tag ? tag[0]:null;
+    // here it's mapping the all post 
+    //and taking the only posts that has tag
+    //if there is any tag post it will return those post 
+    //or it will return null
 
     })
     .filter(Boolean);
     const uniqueTags=[...new Set (allTags)];
-    const tags = uniqueTags.slice(-3);
+    const tags = uniqueTags.slice(-10);
+    //it it's taking the unique first 10 tag campaign, promotion name 
   
     let tableRows = "";
     tags.forEach((tag, index)=>{
       const userPosts = companyPosts.filter(post =>
         post.status==="user"&&post.postText.includes(tag)
+        //here the table row goes for each tag name
       );
 
     if(userPosts.length>0){
       userPosts.sort((a,b)=>b.likesAmount - a.likesAmount);
+      //from the tags it'll choose the most liked one post 
       const winner = userPosts[0];
+      //here the table rows goest down including tag name, 
+      //user name, and like amount 
       tableRows+=`
         <tr>
           <th scope="row" >${index + 1}</th>
@@ -193,6 +211,7 @@ h3 > span {
 }
     </script>
     <script>
+      //here this window will load getting profile info and post like info 
       window.onload=function(){
       getComProfileInfo()
       getInfoPostLike()
@@ -202,27 +221,31 @@ h3 > span {
 
     <script>
     const logOutButton = document.querySelector('.logOut');
-    
-
+    // selecting the log out by querySelector 
     logOutButton.addEventListener('click', event => {
       event.preventDefault();
+      //using eventlistener to perform the log out button 
       const token = localStorage.getItem("token");
 
       fetch('http://localhost:8086/api/v1/auth/logOut', {
+        //here it will fetch the log out request 
         method: 'POST', 
         headers: {
           'Content-Type': 'application/json',
           "Authorization": `Bearer ${token}`
 
         }, 
-        
+        //checking this with the token 
       }).then(response => {
         if(response.ok) {
           localStorage.removeItem('token');
           localStorage.removeItem('userId');
            window.location.href = "../index.html"
+           //if the response ok, local storage remove the token then 
+           //it will load the index.html window 
         }else{
           alert("Log out failed!");
+          //if the request failed there will be alert message request failed
         }
       })
         .catch(error => alert("network error!"));

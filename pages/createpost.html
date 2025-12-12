@@ -31,6 +31,7 @@
    </div>
    <script>
     const postForm = document.querySelector('#postForm');
+    //selecting the postForm 
     const file = document.getElementById("file");
     postForm.addEventListener('submit', event => {
       event.preventDefault();
@@ -42,19 +43,26 @@
       if(file.files.length){
         formData.append("file", file.files[0]); 
       }  
+      //it will help to send the file to the server 
 
       formData.append("userId", localStorage.getItem('userId'));
+      //appending the data and userid 
 
       fetch('http://localhost:8086/api/v1/posts', {
         method: 'POST', 
         headers: { Authorization:'Bearer ' + localStorage.getItem('token') },
         body: formData
+        //posting it to the server 
       }).then(res => {
         if(res.ok) {
+          //if it post the data successfully 
+          //it will show alert message 
+          //and load the home page 
           alert("post successfully created!");
            window.location.href = "home.html"
         }else{
           alert("post submit failed!");
+          //else give an error message 
         }
       })
         .catch(error => alert("network error!"));
